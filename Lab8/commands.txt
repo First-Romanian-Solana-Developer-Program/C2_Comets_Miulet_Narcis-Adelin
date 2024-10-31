@@ -1,0 +1,11 @@
+-- important
+anchor init favorites
+cd favorites/
+anchor build
+anchor deploy --provider.cluster devnet
+anchor test
+solana-test-validator
+anchor deploy
+
+-- misc
+solana config get
