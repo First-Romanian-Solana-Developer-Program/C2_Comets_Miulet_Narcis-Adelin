@@ -1,0 +1,11 @@
+-- important
+anchor init anchor-test --template single
+cd anchor-test/
+anchor build
+anchor deploy --provider.cluster devnet
+anchor test
+solana-test-validator
+anchor deploy
+
+-- misc
+solana config get
