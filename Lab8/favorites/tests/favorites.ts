@@ -47,4 +47,25 @@ describe("favorites", () => {
     assert.equal(favoritesAccount.color, favoriteColor);
     assert.deepEqual(favoritesAccount.hobbies, favoriteHobbies);
   });
+
+  it("Prevents unauthorized users from modifying another user's favorites", async () => {
+    const unauthorizedUser = anchor.web3.Keypair.generate();
+    const favoriteNumber = new anchor.BN(42);
+    const favoriteColor = "cyan";
+    const favoriteHobbies = ["sleeping", "eating", "coding"];
+    try {
+      await program.methods
+        .setFavorites(favoriteNumber, favoriteColor, favoriteHobbies)
+        .signers([unauthorizedUser])
+        .rpc();
+    } catch (error) {
+      const errorMessage = (error as Error).message;
+      const expectedErrorSubstring = "unknown signer";
+
+      assert.isTrue(
+        errorMessage.includes(expectedErrorSubstring),
+        `Expected error to include "${expectedErrorSubstring}"`
+      );
+    }
+  });
 });
